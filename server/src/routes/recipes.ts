@@ -60,6 +60,47 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/suggestions", async (req, res) => {
+  try {
+    const raw = req.query.ingredientIds as string | undefined;
+    if (!raw) {
+      res.json({ recipes: [] });
+      return;
+    }
+    const ids = raw.split(",").map(Number).filter((n) => !isNaN(n) && n > 0);
+    if (ids.length === 0) {
+      res.json({ recipes: [] });
+      return;
+    }
+    const placeholders = ids.map(() => "?").join(",");
+    const sql = `
+      SELECT r.id, r.name, r.image_url, r.helg,
+             COALESCE(CAST(SUM(ri.price) AS SIGNED), 0) AS total_price,
+             COUNT(DISTINCT CASE WHEN ri.ingredient_id IN (${placeholders}) THEN ri.ingredient_id END) AS match_count
+      FROM recipe r
+      LEFT JOIN recipe_ingredient ri ON r.id = ri.recipe_id
+      GROUP BY r.id
+      HAVING match_count > 0
+      ORDER BY match_count DESC, r.name
+      LIMIT 30
+    `;
+    const [rows] = await pool.query<RowDataPacket[]>(sql, ids);
+    res.json({
+      recipes: rows.map((r) => ({
+        id: r.id,
+        name: r.name,
+        image_url: r.image_url,
+        helg: Boolean(r.helg),
+        total_price: Number(r.total_price),
+        match_count: Number(r.match_count),
+      })),
+    });
+  } catch (err) {
+    console.error("GET /api/recipes/suggestions error:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 router.get("/:id", async (req, res) => {
   try {
     const id = Number(req.params.id);

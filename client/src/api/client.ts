@@ -2,6 +2,8 @@ import type {
   RecipesResponse,
   RecipeDetail,
   ShoppingListResponse,
+  IngredientsResponse,
+  RecipeSuggestionsResponse,
 } from "../../../shared/types";
 
 const BASE = "/api";
@@ -25,6 +27,21 @@ export async function fetchRecipes(params: {
 export async function fetchRecipeDetail(id: number): Promise<RecipeDetail> {
   const res = await fetch(`${BASE}/recipes/${id}`);
   if (!res.ok) throw new Error("Failed to fetch recipe");
+  return res.json();
+}
+
+export async function fetchIngredients(): Promise<IngredientsResponse> {
+  const res = await fetch(`${BASE}/ingredients`);
+  if (!res.ok) throw new Error("Failed to fetch ingredients");
+  return res.json();
+}
+
+export async function fetchRecipeSuggestions(
+  ingredientIds: number[]
+): Promise<RecipeSuggestionsResponse> {
+  const q = new URLSearchParams({ ingredientIds: ingredientIds.join(",") });
+  const res = await fetch(`${BASE}/recipes/suggestions?${q}`);
+  if (!res.ok) throw new Error("Failed to fetch suggestions");
   return res.json();
 }
 

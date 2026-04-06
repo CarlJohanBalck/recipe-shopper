@@ -7,6 +7,7 @@ import { SelectionProvider } from "./src/context/SelectionContext";
 import RecipesScreen from "./src/screens/RecipesScreen";
 import RecipeDetailScreen from "./src/screens/RecipeDetailScreen";
 import ShoppingListScreen from "./src/screens/ShoppingListScreen";
+import IngredientSuggestionsScreen from "./src/screens/IngredientSuggestionsScreen";
 import type { RootStackParamList } from "./src/navigation";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -43,6 +44,11 @@ export default function App() {
                 title: "Inköpslista",
                 headerBackTitle: "Tillbaka",
               }}
+            />
+            <Stack.Screen
+              name="IngredientSuggestions"
+              component={IngredientSuggestionsScreen}
+              options={{ headerShown: false }}
             />
           </Stack.Navigator>
         </NavigationContainer>

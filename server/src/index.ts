@@ -4,6 +4,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import recipesRouter from "./routes/recipes.js";
 import shoppingListRouter from "./routes/shopping-list.js";
+import ingredientsRouter from "./routes/ingredients.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -19,6 +20,7 @@ app.get("/api/health", (_req, res) => {
 
 app.use("/api/recipes", recipesRouter);
 app.use("/api/shopping-list", shoppingListRouter);
+app.use("/api/ingredients", ingredientsRouter);
 
 const staticDir = path.join(__dirname, "../../public");
 app.use(express.static(staticDir));

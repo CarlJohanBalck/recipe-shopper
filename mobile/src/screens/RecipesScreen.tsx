@@ -109,6 +109,13 @@ export default function RecipesScreen({ navigation }: Props) {
             <Ionicons name="book-outline" size={22} color={colors.white} />
           </View>
           <Text style={styles.title}>Receptväljaren</Text>
+          <TouchableOpacity
+            style={styles.suggestBtn}
+            onPress={() => navigation.navigate("IngredientSuggestions")}
+          >
+            <Ionicons name="bulb-outline" size={16} color={colors.emerald[700]} />
+            <Text style={styles.suggestBtnText}>Hitta recept</Text>
+          </TouchableOpacity>
         </View>
 
         <View style={styles.searchRow}>
@@ -237,6 +244,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 10,
     paddingVertical: 12,
+  },
+  suggestBtn: {
+    marginLeft: "auto",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
+    paddingHorizontal: 12,
+    paddingVertical: 7,
+    borderRadius: 10,
+    backgroundColor: colors.emerald[50],
+    borderWidth: 1,
+    borderColor: colors.emerald[200],
+  },
+  suggestBtnText: {
+    fontSize: 13,
+    fontWeight: "600",
+    color: colors.emerald[700],
   },
   logo: {
     width: 36,

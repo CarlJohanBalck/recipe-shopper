@@ -40,3 +40,21 @@ export interface RecipesResponse {
   recipes: RecipeSummary[];
   total: number;
 }
+
+export interface Ingredient {
+  id: number;
+  name: string;
+  category: string | null;
+}
+
+export interface IngredientsResponse {
+  ingredients: Ingredient[];
+}
+
+export interface RecipeSuggestion extends RecipeSummary {
+  match_count: number;
+}
+
+export interface RecipeSuggestionsResponse {
+  recipes: RecipeSuggestion[];
+}
